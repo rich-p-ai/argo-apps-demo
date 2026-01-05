@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: guestbook
-          image: bitnami/nginx:latest
+          image: quay.io/bitnami/nginx:1.25
           ports:
             - containerPort: 8080
               name: http

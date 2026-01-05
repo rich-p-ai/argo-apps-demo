@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: mongo
-          image: bitnami/mongodb:4.4
+          image: quay.io/bitnami/mongodb:4.4
           env:
             - name: MONGODB_ROOT_PASSWORD
               value: admin

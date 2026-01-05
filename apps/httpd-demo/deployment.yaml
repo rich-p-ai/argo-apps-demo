@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: bitnami/apache:latest
+          image: quay.io/bitnami/apache:2.4
           ports:
             - containerPort: 8080
               protocol: TCP
