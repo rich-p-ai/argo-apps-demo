@@ -22,7 +22,7 @@ spec:
     path: apps/httpd-demo
   
   destination:
-    server: https://api.ct1.sw9e.p3.openshiftapps.com:443
+    server: https://kubernetes.default.svc
     namespace: httpd-demo
   
   syncPolicy:

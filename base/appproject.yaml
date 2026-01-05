@@ -17,14 +17,14 @@ spec:
     - https://github.com/rich-p-ai/argo-apps-demo.git
   
   # Destination clusters and namespaces
+  # Deploy to local cluster (ct1)
   destinations:
     - namespace: httpd-demo
-      server: https://api.ct1.sw9e.p3.openshiftapps.com:443
+      server: https://kubernetes.default.svc
     - namespace: pacman
-      server: https://api.ct1.sw9e.p3.openshiftapps.com:443
+      server: https://kubernetes.default.svc
     - namespace: guestbook
-      server: https://api.ct1.sw9e.p3.openshiftapps.com:443
-    # Also allow openshift-gitops for Application management
+      server: https://kubernetes.default.svc
     - namespace: openshift-gitops
       server: https://kubernetes.default.svc
   
