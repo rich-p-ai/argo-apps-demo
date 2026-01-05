@@ -22,9 +22,9 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: registry.redhat.io/rhel8/httpd-24:latest
+          image: docker.io/httpd:2.4-alpine
           ports:
-            - containerPort: 8080
+            - containerPort: 80
               protocol: TCP
               name: http
           resources:
@@ -37,21 +37,13 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 80
             initialDelaySeconds: 15
             periodSeconds: 20
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop:
-                - ALL
 

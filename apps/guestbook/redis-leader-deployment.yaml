@@ -49,12 +49,4 @@ spec:
                 - ping
             initialDelaySeconds: 15
             periodSeconds: 10
-          securityContext:
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop:
-                - ALL
 

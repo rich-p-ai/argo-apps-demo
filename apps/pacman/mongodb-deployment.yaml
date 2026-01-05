@@ -21,15 +21,11 @@ spec:
     spec:
       containers:
         - name: mongo
-          image: registry.redhat.io/rhel8/mongodb-36:latest
+          image: docker.io/mongo:4.4
           env:
-            - name: MONGODB_USER
-              value: pacman
-            - name: MONGODB_PASSWORD
-              value: pacman
-            - name: MONGODB_DATABASE
-              value: pacman
-            - name: MONGODB_ADMIN_PASSWORD
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: admin
+            - name: MONGO_INITDB_ROOT_PASSWORD
               value: admin
           ports:
             - containerPort: 27017
@@ -47,17 +43,17 @@ spec:
           readinessProbe:
             exec:
               command:
-                - /bin/sh
-                - -c
-                - mongo --eval "db.adminCommand('ping')"
+                - mongosh
+                - --eval
+                - "db.adminCommand('ping')"
             initialDelaySeconds: 30
             periodSeconds: 10
           livenessProbe:
             exec:
               command:
-                - /bin/sh
-                - -c
-                - mongo --eval "db.adminCommand('ping')"
+                - mongosh
+                - --eval
+                - "db.adminCommand('ping')"
             initialDelaySeconds: 60
             periodSeconds: 30
       volumes:
