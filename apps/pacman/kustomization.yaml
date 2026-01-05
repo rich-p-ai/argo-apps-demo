@@ -1,0 +1,19 @@
+# Pacman Demo Application
+# Classic arcade game demo for OpenShift
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: pacman
+
+resources:
+  - namespace.yaml
+  - mongodb-deployment.yaml
+  - mongodb-service.yaml
+  - mongodb-pvc.yaml
+  - pacman-deployment.yaml
+  - pacman-service.yaml
+  - pacman-route.yaml
+
+commonLabels:
+  app.kubernetes.io/part-of: pacman-app
+

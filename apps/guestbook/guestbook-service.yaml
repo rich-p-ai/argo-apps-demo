@@ -1,0 +1,19 @@
+# Guestbook Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: guestbook
+  namespace: guestbook
+  labels:
+    app: guestbook
+    app.kubernetes.io/name: guestbook
+    app.kubernetes.io/component: frontend
+spec:
+  selector:
+    app: guestbook
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+

@@ -1,0 +1,21 @@
+# Redis Follower Service for Guestbook
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-follower
+  namespace: guestbook
+  labels:
+    app: redis
+    role: follower
+    app.kubernetes.io/name: redis-follower
+    app.kubernetes.io/component: database
+spec:
+  selector:
+    app: redis
+    role: follower
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP
+

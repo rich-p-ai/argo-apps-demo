@@ -1,0 +1,57 @@
+# HTTPD Demo Deployment
+# Uses Red Hat's Universal Base Image with Apache HTTPD
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-demo
+  namespace: httpd-demo
+  labels:
+    app: httpd-demo
+    app.kubernetes.io/name: httpd-demo
+    app.kubernetes.io/component: web-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: httpd-demo
+  template:
+    metadata:
+      labels:
+        app: httpd-demo
+        app.kubernetes.io/name: httpd-demo
+    spec:
+      containers:
+        - name: httpd
+          image: registry.redhat.io/rhel8/httpd-24:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: http
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+

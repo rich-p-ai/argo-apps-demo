@@ -1,0 +1,24 @@
+# Guestbook Frontend Route
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: guestbook
+  namespace: guestbook
+  labels:
+    app: guestbook
+    app.kubernetes.io/name: guestbook
+    app.kubernetes.io/component: frontend
+  annotations:
+    openshift.io/host.generated: "true"
+spec:
+  to:
+    kind: Service
+    name: guestbook
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+

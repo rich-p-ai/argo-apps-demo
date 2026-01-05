@@ -1,0 +1,18 @@
+# HTTPD Demo Application
+# Simple Apache web server deployment for OpenShift
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: httpd-demo
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - route.yaml
+
+commonLabels:
+  app: httpd-demo
+  app.kubernetes.io/name: httpd-demo
+  app.kubernetes.io/part-of: demo-apps
+

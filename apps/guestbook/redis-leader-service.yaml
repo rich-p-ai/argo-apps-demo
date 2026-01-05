@@ -1,0 +1,21 @@
+# Redis Leader Service for Guestbook
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-leader
+  namespace: guestbook
+  labels:
+    app: redis
+    role: leader
+    app.kubernetes.io/name: redis-leader
+    app.kubernetes.io/component: database
+spec:
+  selector:
+    app: redis
+    role: leader
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP
+

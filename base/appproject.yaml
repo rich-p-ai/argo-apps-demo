@@ -1,0 +1,47 @@
+# ArgoCD AppProject for Demo Applications
+# This project provides RBAC and source/destination restrictions
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: demo-apps
+  namespace: openshift-gitops
+  labels:
+    app-of-apps: demo-apps
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: "Demo Applications deployed via App of Apps pattern"
+  
+  # Allow manifests from the demo repo
+  sourceRepos:
+    - https://github.com/rich-p-ai/argo-apps-demo.git
+  
+  # Destination clusters and namespaces
+  destinations:
+    - namespace: httpd-demo
+      server: https://api.ct1.sw9e.p3.openshiftapps.com:443
+    - namespace: pacman
+      server: https://api.ct1.sw9e.p3.openshiftapps.com:443
+    - namespace: guestbook
+      server: https://api.ct1.sw9e.p3.openshiftapps.com:443
+    # Also allow openshift-gitops for Application management
+    - namespace: openshift-gitops
+      server: https://kubernetes.default.svc
+  
+  # Allow cluster-scoped resources
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+    - group: route.openshift.io
+      kind: Route
+  
+  # Allow all namespaced resources
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  
+  # Notifications for sync status
+  # annotations:
+  #   notifications.argoproj.io/subscribe.on-sync-failed.slack: demo-apps
+  #   notifications.argoproj.io/subscribe.on-health-degraded.slack: demo-apps
+

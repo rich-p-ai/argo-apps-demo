@@ -1,0 +1,67 @@
+# MongoDB Deployment for Pacman high scores
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  namespace: pacman
+  labels:
+    app: mongo
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/component: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+        app.kubernetes.io/name: mongodb
+    spec:
+      containers:
+        - name: mongo
+          image: registry.redhat.io/rhel8/mongodb-36:latest
+          env:
+            - name: MONGODB_USER
+              value: pacman
+            - name: MONGODB_PASSWORD
+              value: pacman
+            - name: MONGODB_DATABASE
+              value: pacman
+            - name: MONGODB_ADMIN_PASSWORD
+              value: admin
+          ports:
+            - containerPort: 27017
+              name: mongo
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /var/lib/mongodb/data
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mongo --eval "db.adminCommand('ping')"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mongo --eval "db.adminCommand('ping')"
+            initialDelaySeconds: 60
+            periodSeconds: 30
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-storage
+

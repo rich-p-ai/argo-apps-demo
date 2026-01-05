@@ -1,0 +1,12 @@
+# Namespace for Guestbook Demo Application
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: guestbook
+  labels:
+    app.kubernetes.io/name: guestbook
+    app.kubernetes.io/part-of: guestbook-app
+  annotations:
+    openshift.io/description: "Guestbook Demo Application - Classic K8s demo for ArgoCD"
+    openshift.io/display-name: "Guestbook Demo"
+

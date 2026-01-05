@@ -1,0 +1,13 @@
+# Namespace for HTTPD Demo Application
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: httpd-demo
+  labels:
+    app: httpd-demo
+    app.kubernetes.io/name: httpd-demo
+    app.kubernetes.io/part-of: demo-apps
+  annotations:
+    openshift.io/description: "HTTPD Demo Application for ArgoCD App of Apps Demo"
+    openshift.io/display-name: "HTTPD Demo"
+

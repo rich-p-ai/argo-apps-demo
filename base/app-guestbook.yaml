@@ -1,0 +1,46 @@
+# ArgoCD Application for Guestbook
+# Deployed to ct1 cluster via App of Apps pattern
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook
+  namespace: openshift-gitops
+  labels:
+    app: guestbook
+    app-of-apps: demo-apps
+    cluster: ct1
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: demo-apps
+  
+  source:
+    repoURL: https://github.com/rich-p-ai/argo-apps-demo.git
+    targetRevision: HEAD
+    path: apps/guestbook
+  
+  destination:
+    server: https://api.ct1.sw9e.p3.openshiftapps.com:443
+    namespace: guestbook
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - RespectIgnoreDifferences=true
+      - ApplyOutOfSyncOnly=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+

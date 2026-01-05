@@ -1,0 +1,16 @@
+# App of Apps Base Configuration
+# This is the root of the App of Apps pattern
+# Hub ArgoCD deploys this, which creates Application CRs for ct1 ArgoCD to manage
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - app-httpd-demo.yaml
+  - app-pacman.yaml
+  - app-guestbook.yaml
+  - appproject.yaml
+
+commonLabels:
+  app-of-apps: demo-apps
+  managed-by: argocd
+

@@ -1,0 +1,17 @@
+# MongoDB Persistent Volume Claim for Pacman
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-storage
+  namespace: pacman
+  labels:
+    app: mongo
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/component: database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+

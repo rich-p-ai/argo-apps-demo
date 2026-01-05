@@ -1,0 +1,24 @@
+# Pacman Application Route
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: pacman
+  namespace: pacman
+  labels:
+    app: pacman
+    app.kubernetes.io/name: pacman
+    app.kubernetes.io/component: frontend
+  annotations:
+    openshift.io/host.generated: "true"
+spec:
+  to:
+    kind: Service
+    name: pacman
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+

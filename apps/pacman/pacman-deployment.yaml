@@ -1,0 +1,70 @@
+# Pacman Application Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pacman
+  namespace: pacman
+  labels:
+    app: pacman
+    app.kubernetes.io/name: pacman
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pacman
+  template:
+    metadata:
+      labels:
+        app: pacman
+        app.kubernetes.io/name: pacman
+    spec:
+      containers:
+        - name: pacman
+          image: quay.io/jpacker/nodejs-pacman-app:latest
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: MONGO_SERVICE_HOST
+              value: mongo
+            - name: MONGO_DATABASE
+              value: pacman
+            - name: MONGO_AUTH_USER
+              value: pacman
+            - name: MONGO_AUTH_PWD
+              value: pacman
+            - name: MY_MONGO_PORT
+              value: "27017"
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+

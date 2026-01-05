@@ -1,0 +1,19 @@
+# HTTPD Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-demo
+  namespace: httpd-demo
+  labels:
+    app: httpd-demo
+    app.kubernetes.io/name: httpd-demo
+spec:
+  selector:
+    app: httpd-demo
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+  type: ClusterIP
+

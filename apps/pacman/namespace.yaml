@@ -1,0 +1,12 @@
+# Namespace for Pacman Demo Application
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pacman
+  labels:
+    app.kubernetes.io/name: pacman
+    app.kubernetes.io/part-of: pacman-app
+  annotations:
+    openshift.io/description: "Pacman Demo Application - Classic arcade game for ArgoCD demo"
+    openshift.io/display-name: "Pacman Game"
+
