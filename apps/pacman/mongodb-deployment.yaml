@@ -1,5 +1,5 @@
 # MongoDB Deployment for Pacman high scores
-# Uses bitnami mongodb which is OpenShift compatible
+# Uses the official mongo image with emptyDir volume
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,16 +22,8 @@ spec:
     spec:
       containers:
         - name: mongo
-          image: quay.io/bitnami/mongodb:4.4
-          env:
-            - name: MONGODB_ROOT_PASSWORD
-              value: admin
-            - name: MONGODB_USERNAME
-              value: pacman
-            - name: MONGODB_PASSWORD
-              value: pacman
-            - name: MONGODB_DATABASE
-              value: pacman
+          image: docker.io/mongo:5.0
+          args: ["--bind_ip_all"]
           ports:
             - containerPort: 27017
               name: mongo
@@ -44,13 +36,13 @@ spec:
               cpu: "500m"
           volumeMounts:
             - name: mongo-data
-              mountPath: /bitnami/mongodb
+              mountPath: /data/db
           readinessProbe:
             exec:
               command:
                 - /bin/sh
                 - -c
-                - mongo --eval "db.adminCommand('ping')" --quiet
+                - "mongosh --eval 'db.runCommand(\"ping\").ok' localhost:27017/test --quiet"
             initialDelaySeconds: 30
             periodSeconds: 10
           livenessProbe:
@@ -58,10 +50,9 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - mongo --eval "db.adminCommand('ping')" --quiet
+                - "mongosh --eval 'db.runCommand(\"ping\").ok' localhost:27017/test --quiet"
             initialDelaySeconds: 60
             periodSeconds: 30
       volumes:
         - name: mongo-data
-          persistentVolumeClaim:
-            claimName: mongo-storage
+          emptyDir: {}

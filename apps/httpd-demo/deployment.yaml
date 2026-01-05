@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: quay.io/bitnami/apache:2.4
+          image: docker.io/nginxinc/nginx-unprivileged:alpine
           ports:
             - containerPort: 8080
               protocol: TCP
