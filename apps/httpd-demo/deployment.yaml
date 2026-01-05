@@ -1,5 +1,5 @@
 # HTTPD Demo Deployment
-# Uses Red Hat's Universal Base Image with Apache HTTPD
+# Uses bitnami httpd which runs as non-root on port 8080
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,9 +22,9 @@ spec:
     spec:
       containers:
         - name: httpd
-          image: docker.io/httpd:2.4-alpine
+          image: bitnami/apache:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               protocol: TCP
               name: http
           resources:
@@ -37,13 +37,12 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
-
